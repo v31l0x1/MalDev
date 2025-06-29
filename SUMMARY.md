@@ -1,5 +1,9 @@
 # Table of contents
 
-* [Payload  in .text section](README.md)
-* [Payload in .data section](payload-in-.data-section.md)
+* [PE vs Dll](README.md)
+* [Payload  in .text section](<README (1).md>)
+* [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
 * [Payload in .rsrc section](payload-in-.rsrc-section.md)
+* [Base64 Encoded Payload](base64-encoded-payload.md)
+* [XOR Encrypted Payload](xor-encrypted-payload.md)
+* [AES Encrypted Payload](aes-encrypted-payload.md)

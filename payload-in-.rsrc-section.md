@@ -2,24 +2,16 @@
 
 Saving the payload in the `.rsrc` section is one of the best options as this is where most real-world binaries save their data. It is also a cleaner method for malware authors, since larger payloads cannot be stored in the `.data` or `.rdata` sections due to size limits, leading to errors from Visual Studio during compilation.
 
-\
 The steps below illustrate how to store a payload in the `.rsrc` section.
 
-1\. Inside Visual Studio, right-click on 'Resource files' then click Add > New Item.
-
-2 .Click on 'Resource File'.
-
-3\. This will generate a new sidebar, the Resource View. Right-click on the .rc file (Resource.rc is the default name), and select the 'Add Resource' option.
-
-4\. Click 'Import'.
-
-5\. Select the calc.ico file, which is the raw payload renamed to have the `.ico` extension.
-
-6 .A prompt will appear requesting the resource type. Enter "RCDATA" without the quotes.
-
-7 .After clicking OK, the payload should be displayed in raw binary format within the Visual Studio project
-
-8\. When exiting the Resource View, the "resource.h" header file should be visible and named according to the .rc file from Step 2. This file contains a define statement that refers to the payload's ID in the resource section (IDR\_RCDATA1). This is important in order to be able to retrieve the payload from the resource section later.
+1. Inside Visual Studio, right-click on 'Resource files' then click Add > New Item.
+2. Click on 'Resource File'.
+3. This will generate a new sidebar, the Resource View. Right-click on the .rc file (Resource.rc is the default name), and select the 'Add Resource' option.
+4. Click 'Import'.
+5. Select the calc.ico file, which is the raw payload renamed to have the `.ico` extension.
+6. A prompt will appear requesting the resource type. Enter "RCDATA" without the quotes.
+7. After clicking OK, the payload should be displayed in raw binary format within the Visual Studio project
+8. When exiting the Resource View, the "resource.h" header file should be visible and named according to the .rc file from Step 2. This file contains a define statement that refers to the payload's ID in the resource section (IDR\_RCDATA1). This is important in order to be able to retrieve the payload from the resource section later.
 
 Once compiled, the payload will now be stored in the `.rsrc` section, but it cannot be accessed directly. Instead, several WinAPIs must be used to access it.
 
