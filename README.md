@@ -1,2 +1,0 @@
-# Payload in .text section
-
