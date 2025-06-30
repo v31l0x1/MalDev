@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Windows API Basics](README.md)
+* [Windows API](README.md)
 * [PE & DLL](pe-and-dll.md)
 * [Payload in .text section](<README (1).md>)
 * [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
