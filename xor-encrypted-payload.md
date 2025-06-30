@@ -12,6 +12,7 @@ The script performs the following key actions:
 
 ```python
 
+import base64
 import sys
 
 KEY = "mysecretkey"
@@ -22,16 +23,18 @@ def xor(data, key):
     output = bytearray()
 
     for i in range(len(data)):
-        current = data[i]
+        current = data[i]  # Byte value (integer)
         current_key = key[i % len(key)]
-        output.append(current ^ ord(current_key))
+        output.append(current ^ ord(current_key))  # XOR byte with key char
 
-    return output.decode("latin1")
-
+    return output.decode("latin1")  # Return as string for printCiphertext
 
 def printCiphertext(ciphertext):
-    print("{ 0x" + ", 0x".join(hex(ord(x))[2:] for x in ciphertext) + " };")
-
+    print(
+        "unsigned char payload[] = { 0x"
+        + ", 0x".join(hex(ord(x))[2:] for x in ciphertext)
+        + " };"
+    )
 
 try:
     plaintext = open(sys.argv[1], "rb").read()
@@ -40,8 +43,7 @@ except:
     sys.exit()
 
 ciphertext = xor(plaintext, KEY)
-print("{ 0x" + ", 0x".join(hex(ord(x))[2:] for x in ciphertext) + " };")
-
+printCiphertext(ciphertext)
 
 ```
 
