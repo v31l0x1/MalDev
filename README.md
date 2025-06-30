@@ -2,7 +2,7 @@
 
 * [Windows API](windows-api-basics.md)
 * [PE & DLL](pe-and-dll.md)
-* [Payload in .text section](payload-in.text-section.md>)
+* [Payload in .text section](payload-in.text-section.md)
 * [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
 * [Payload in .rsrc section](payload-in-.rsrc-section.md)
 * [Base64 Encoded Payload](base64-encoded-payload.md)
