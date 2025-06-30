@@ -1,6 +1,6 @@
 # Table of contents
 
-* [PE & DLL](pe-&-dll.md)
+* [PE & DLL](README.md)
 * [Windows API Basics](windows-api-basics.md)
 * [PE Structure](pe-structure.md)
 * [Dynamic-Link Library](dynamic-link-library.md)
