@@ -1,6 +1,14 @@
-# Table of contents
+---
+hidden: true
+---
 
-* [PE & DLL](README.md)
+# README
+
+## README
+
+## Table of contents
+
+* [PE & DLL](./)
 * [Windows API Basics](windows-api-basics.md)
 * [PE Structure](pe-structure.md)
 * [Dynamic-Link Library](dynamic-link-library.md)
@@ -11,4 +19,3 @@
 * [XOR Encrypted Payload](xor-encrypted-payload.md)
 * [AES Encrypted Payload](aes-encrypted-payload.md)
 * [README](<README (1).md>)
-* [Local Payload Execution](local-payload-execution.md)

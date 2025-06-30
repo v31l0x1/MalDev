@@ -1,19 +1,55 @@
----
-hidden: true
----
+# PE vs Dll
 
-# README
+### PE
 
-# Table of contents
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include<string.h>
 
-* [PE & DLL](pe-&-dll.md)
-* [Windows API Basics](windows-api-basics.md)
-* [PE Structure](pe-structure.md)
-* [Dynamic-Link Library](dynamic-link-library.md)
-* [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
-* [Payload in .text section](payload-in-.text-section.md)
-* [Payload in .rsrc section](payload-in-.rsrc-section.md)
-* [Base64 Encoded Payload](base64-encoded-payload.md)
-* [XOR Encrypted Payload](xor-encrypted-payload.md)
-* [AES Encrypted Payload](aes-encrypted-payload.md)
-* [README](README.md)
+int main(void) {
+	printf("RT Operator, here I come!\n");
+	getchar();
+	return 0;
+}
+// ./simplePE.exe
+```
+
+### DLL
+
+```c
+#include "pch.h"
+
+#include <Windows.h>
+#pragma comment(lib, "user32.lib")
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+	switch (ul_reason_for_call) {
+	case DLL_PROCESS_ATTACH:
+		break;
+	case DLL_THREAD_ATTACH:
+		// Code to run when a thread is created in the process
+		break;
+	case DLL_THREAD_DETACH:
+		// Code to run when a thread exits cleanly
+		break;
+	case DLL_PROCESS_DETACH:
+		// Code to run when the DLL is unloaded from a process
+		break;
+	}
+	return TRUE;
+}
+
+extern "C"
+__declspec(dllexport) BOOL WINAPI RunME(void) {
+	MessageBox(
+		NULL,
+		L"RT Operator, here I come!",
+		L"RTO",
+		MB_OK
+		);
+	return TRUE;
+}
+// rundll32 simpleDLL.dll,RunME
+```
