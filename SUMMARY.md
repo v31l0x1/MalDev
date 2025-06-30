@@ -10,3 +10,4 @@
 * [XOR Encrypted Payload](xor-encrypted-payload.md)
 * [AES Encrypted Payload](aes-encrypted-payload.md)
 * [README](<README (1).md>)
+* [Dynamic-Link Library](dynamic-link-library.md)

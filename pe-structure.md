@@ -10,7 +10,7 @@ Note that this module and future modules will often interchangeably refer to exe
 
 The diagram below shows a simplified structure of a Portable Executable. Every header shown in the image is defined as a data structure that holds information about the PE file. Each data structure will be explained in detail in this module.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
 
 ### **DOS Header (IMAGE\_DOS\_HEADER)**
 
