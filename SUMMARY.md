@@ -1,6 +1,7 @@
 # Table of contents
 
-* [PE vs Dll](README.md)
+* [Windows API](README.md)
+* [PE vs Dll](<README (2).md>)
 * [Payload  in .text section](<README (1).md>)
 * [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
 * [Payload in .rsrc section](payload-in-.rsrc-section.md)
