@@ -3,6 +3,7 @@
 * [PE & DLL](README.md)
 * [Windows API Basics](windows-api-basics.md)
 * [PE Structure](pe-structure.md)
+* [Dynamic-Link Library](dynamic-link-library.md)
 * [Payload in .text section](payload-in-.text-section.md)
 * [Payload in .data & .rdata section](payload-in-.data-and-.rdata-section.md)
 * [Payload in .rsrc section](payload-in-.rsrc-section.md)
@@ -10,4 +11,3 @@
 * [XOR Encrypted Payload](xor-encrypted-payload.md)
 * [AES Encrypted Payload](aes-encrypted-payload.md)
 * [README](<README (1).md>)
-* [Dynamic-Link Library](dynamic-link-library.md)
