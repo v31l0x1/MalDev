@@ -1,6 +1,5 @@
 # Table of contents
 
-* [README](README.md)
 * [PE & DLL](pe-and-dll.md)
 * [Windows API Basics](windows-api-basics.md)
 * [PE Structure](pe-structure.md)
