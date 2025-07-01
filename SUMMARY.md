@@ -14,4 +14,5 @@
 * [Local Payload Execution - DLL](local-payload-execution-dll.md)
 * [Local Payload Execution - Shellcode](local-payload-execution-shellcode.md)
 * [Process Injection - DLL Injection](process-injection-dll-injection.md)
+* [Process Injection simple - ShellCode](process-injection-simple-shellcode.md)
 * [README](<README (1).md>)
