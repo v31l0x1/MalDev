@@ -17,4 +17,5 @@
 * [Process Injection - DLL simple](process-injection-dll-simple.md)
 * [Process Injection - Shellcode](process-injection-shellcode.md)
 * [Process Injection - ShellCode simple](process-injection-shellcode-simple.md)
+* [Hiding Console](hiding-console.md)
 * [README](<README (1).md>)

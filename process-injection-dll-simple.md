@@ -17,30 +17,43 @@ Injector Code
 
 int FindTarget(const wchar_t* procname) {
 
-	HANDLE hProcSnap;
-	PROCESSENTRY32 pe32;
-	int pid = 0;
+    HANDLE hProcSnap;
+    PROCESSENTRY32 pe32;
+    int pid = 0;
+    wchar_t procnameLower[260];
+    wchar_t exeNameLower[260];
 
-	hProcSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (INVALID_HANDLE_VALUE == hProcSnap) return 0;
 
-	pe32.dwSize = sizeof(PROCESSENTRY32);
+    wcsncpy_s(procnameLower, 260, procname, _TRUNCATE);
+    for (size_t i = 0; procnameLower[i]; i++) {
+        procnameLower[i] = towlower(procnameLower[i]);
+    }
 
-	if (!Process32First(hProcSnap, &pe32)) {
-		CloseHandle(hProcSnap);
-		return 0;
-	}
+    hProcSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (INVALID_HANDLE_VALUE == hProcSnap) return 0;
 
-	while (Process32Next(hProcSnap, &pe32)) {
-		if (lstrcmpiW(procname, pe32.szExeFile) == 0) {
-			pid = pe32.th32ProcessID;
-			break;
-		}
-	}
+    pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	CloseHandle(hProcSnap);
+    if (!Process32First(hProcSnap, &pe32)) {
+        CloseHandle(hProcSnap);
+        return 0;
+    }
 
-	return pid;
+    while (Process32Next(hProcSnap, &pe32)) {
+        wcsncpy_s(exeNameLower, 260, pe32.szExeFile, _TRUNCATE);
+        for (size_t i = 0; exeNameLower[i]; i++) {
+            exeNameLower[i] = towlower(exeNameLower[i]);
+        }
+
+        if (wcscmp(procnameLower, exeNameLower) == 0) {
+            pid = pe32.th32ProcessID;
+            break;
+        }
+    }
+
+    CloseHandle(hProcSnap);
+
+    return pid;
 }
 
 

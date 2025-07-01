@@ -1,4 +1,4 @@
-# Process Injection simple - ShellCode
+# Process Injection - ShellCode simple
 
 ```c
 #include <windows.h>
@@ -46,6 +46,14 @@ int FindTarget(const wchar_t* procname) {
     HANDLE hProcSnap;
     PROCESSENTRY32 pe32;
     int pid = 0;
+    wchar_t procnameLower[260];
+    wchar_t exeNameLower[260];
+
+
+    wcsncpy_s(procnameLower, 260, procname, _TRUNCATE);
+    for (size_t i = 0; procnameLower[i]; i++) {
+        procnameLower[i] = towlower(procnameLower[i]);
+    }
 
     hProcSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (INVALID_HANDLE_VALUE == hProcSnap) return 0;
@@ -58,14 +66,18 @@ int FindTarget(const wchar_t* procname) {
     }
 
     while (Process32Next(hProcSnap, &pe32)) {
-        if (lstrcmpiW(procname, pe32.szExeFile) == 0) {
+        wcsncpy_s(exeNameLower, 260, pe32.szExeFile, _TRUNCATE);
+        for (size_t i = 0; exeNameLower[i]; i++) {
+            exeNameLower[i] = towlower(exeNameLower[i]);
+        }
+
+        if (wcscmp(procnameLower, exeNameLower) == 0) {
             pid = pe32.th32ProcessID;
             break;
         }
     }
 
     CloseHandle(hProcSnap);
-
     return pid;
 }
 
