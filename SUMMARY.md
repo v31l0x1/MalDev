@@ -18,4 +18,5 @@
 * [Process Injection - Shellcode](process-injection-shellcode.md)
 * [Process Injection - ShellCode simple](process-injection-shellcode-simple.md)
 * [Hiding Console](hiding-console.md)
+* [Custom GetProcAddress, GetModuleHandle](custom-getprocaddress-getmodulehandle.md)
 * [README](<README (1).md>)
