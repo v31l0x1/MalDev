@@ -24,9 +24,9 @@
 ## Injection Techniques
 
 * [Classic Injection](injection-techniques/classic-injection.md)
-* [Thread Context Injection](injection-techniques/thread-context-injection.md)
-* [MapView Code Injection](injection-techniques/mapview-code-injection.md)
-* [AsyncCalls](injection-techniques/asynccalls.md)
+* [Thread Context Injection](injection-techniques/thread-context.md)
+* [MapView Code Injection](injection-techniques/sectionmaps.md)
+* [Async Procedure Call Injection](injection-techniques/async-procedure-call-injection.md)
 * [EarlyBird](injection-techniques/earlybird.md)
 
 ***

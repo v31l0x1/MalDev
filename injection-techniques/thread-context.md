@@ -1,4 +1,4 @@
-# Thread Context
+# Thread Context Injection
 
 ```c
 #include <winternl.h>

