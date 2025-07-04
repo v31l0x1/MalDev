@@ -37,3 +37,8 @@
 
 * [DLL](reflective-dll-injection/dll.md)
 * [Implant](reflective-dll-injection/implant.md)
+
+## shellcodeReflectiveDLLInjection
+
+* [DLL](shellcodereflectivedllinjection/dll.md)
+* [Implant](shellcodereflectivedllinjection/implant.md)
