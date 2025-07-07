@@ -20,6 +20,7 @@
 * [Hiding Console](hiding-console.md)
 * [Custom GetProcAddress, GetModuleHandle](custom-getprocaddress-getmodulehandle.md)
 * [No Imports](no-imports.md)
+* [Heaven's Gate x32tox64](heavens-gate-x32tox64.md)
 
 ## Injection Techniques
 
