@@ -51,3 +51,4 @@
 ***
 
 * [Import Address Table Hooking](import-address-table-hooking.md)
+* [Patching](patching.md)
