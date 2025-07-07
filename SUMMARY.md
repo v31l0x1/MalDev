@@ -43,3 +43,11 @@
 
 * [DLL](shellcode-reflective-dll-injection/dll.md)
 * [Implant](shellcode-reflective-dll-injection/implant.md)
+
+## API Hooking
+
+* [Detours Hooking](api-hooking/detours-hooking.md)
+
+***
+
+* [Import Address Table Hooking](import-address-table-hooking.md)
