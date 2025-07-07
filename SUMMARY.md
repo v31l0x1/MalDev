@@ -21,6 +21,8 @@
 * [Custom GetProcAddress, GetModuleHandle](custom-getprocaddress-getmodulehandle.md)
 * [No Imports](no-imports.md)
 * [Heaven's Gate x32tox64](heavens-gate-x32tox64.md)
+* [Payload Control](payload-control.md)
+* [README](<README (1).md>)
 
 ## Injection Techniques
 
@@ -29,10 +31,6 @@
 * [MapView Code Injection](injection-techniques/sectionmaps.md)
 * [Async Procedure Call Injection](injection-techniques/async-procedure-call-injection.md)
 * [EarlyBird](injection-techniques/earlybird.md)
-
-***
-
-* [README](<README (1).md>)
 
 ## Reflective DLL Injection
 
