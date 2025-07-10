@@ -50,3 +50,9 @@
 
 * [Import Address Table Hooking](import-address-table-hooking.md)
 * [Patching](patching.md)
+
+## Evasion Essentials
+
+* [Entropy](evasion-essentials/entropy.md)
+* [PE Details](evasion-essentials/pe-details.md)
+* [Binary Signature](evasion-essentials/binary-signature.md)
