@@ -55,4 +55,4 @@
 
 * [Entropy](evasion-essentials/entropy.md)
 * [PE Details](evasion-essentials/pe-details.md)
-* [Binary Signature](evasion-essentials/binary-signature.md)
+* [Code Signing](evasion-essentials/code-signing.md)
