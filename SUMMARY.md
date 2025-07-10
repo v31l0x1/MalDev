@@ -56,3 +56,7 @@
 * [Entropy](evasion-essentials/entropy.md)
 * [PE Details](evasion-essentials/pe-details.md)
 * [Code Signing](evasion-essentials/code-signing.md)
+
+## Unhooking
+
+* [Classic Unhooking](unhooking/classic-unhooking.md)
