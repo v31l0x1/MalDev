@@ -10,6 +10,7 @@
 * [Base64 Encoded Payload](base64-encoded-payload.md)
 * [XOR Encrypted Payload](xor-encrypted-payload.md)
 * [AES Encrypted Payload](aes-encrypted-payload.md)
+* [RC4 Encrypted Payload](rc4-encrypted-payload.md)
 * [Function Obfucation](function-obfucation.md)
 * [Local Payload Execution - DLL](local-payload-execution-dll.md)
 * [Local Payload Execution - Shellcode](local-payload-execution-shellcode.md)
@@ -53,6 +54,7 @@
 
 ## Evasion Essentials
 
+* [Time Delay Function](evasion-essentials/time-delay-function.md)
 * [Entropy](evasion-essentials/entropy.md)
 * [PE Details](evasion-essentials/pe-details.md)
 * [Code Signing](evasion-essentials/code-signing.md)
