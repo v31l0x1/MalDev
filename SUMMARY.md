@@ -46,11 +46,8 @@
 ## API Hooking
 
 * [Detours Hooking](api-hooking/detours-hooking.md)
-
-***
-
-* [Import Address Table Hooking](import-address-table-hooking.md)
-* [Patching](patching.md)
+* [Import Address Table Hooking](api-hooking/import-address-table-hooking.md)
+* [Patching](api-hooking/patching.md)
 
 ## Evasion Essentials
 
@@ -65,3 +62,19 @@
 * [HellsGate](unhooking/hellsgate.md)
 * [HalosGate](unhooking/halosgate.md)
 * [Pernus Fart](unhooking/pernus-fart.md)
+
+***
+
+* [SilenceETW](silenceetw.md)
+* [Module Stomp](module-stomp.md)
+* [PayloadExec](payloadexec.md)
+
+## PPID-Spoofing
+
+* [Classic Spoofing](ppid-spoofing/classic-spoofing.md)
+* [scheduler](ppid-spoofing/scheduler.md)
+* [Emotet-wmi](ppid-spoofing/emotet-wmi.md)
+
+***
+
+* [Command-line Spoofing](command-line-spoofing.md)
