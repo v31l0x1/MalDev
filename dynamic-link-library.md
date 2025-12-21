@@ -177,8 +177,7 @@ Next, select the location where to save the project files. When that's done, the
 
 <figure><img src=".gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
-The provided DLL template comes with `framework.h`, `pch.h` and `pch.cpp` which are known as [Precompiled Headers](https://en.wikipedia.org/wiki/Precompiled_header). These are files used to make the project compilation faster for large projects. It is unlikely that these will be required in this situation and therefore it is recommended to delete these files. To do so, highlight the file and press the delete key and select the 'Delete' option.\
-
+The provided DLL template comes with `framework.h`, `pch.h` and `pch.cpp` which are known as [Precompiled Headers](https://en.wikipedia.org/wiki/Precompiled_header). These are files used to make the project compilation faster for large projects. It is unlikely that these will be required in this situation and therefore it is recommended to delete these files. To do so, highlight the file and press the delete key and select the 'Delete' option.<br>
 
 <figure><img src=".gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
@@ -198,4 +197,4 @@ Change the 'Precompiled Header' option to 'Not Using Precompiled Headers' and pr
 
 Finally, change the `dllmain.cpp` file to `dllmain.c`. This is required since the provided code snippets in Maldev Academy use C instead of C++. To compile the program, click Build > Build Solution and a DLL will be created under the _Release_ or _Debug_ folder, depending on the compile configuration.
 
-\
+<br>

@@ -61,4 +61,7 @@
 
 ## Unhooking
 
-* [Classic Unhooking](unhooking/classic-unhooking.md)
+* [Classic Unhooking (Fresh Copy)](unhooking/classic-unhooking-fresh-copy.md)
+* [HellsGate](unhooking/hellsgate.md)
+* [HalosGate](unhooking/halosgate.md)
+* [Pernus Fart](unhooking/pernus-fart.md)
